@@ -8,6 +8,12 @@ var csrfStore;
 
 var sessionid;
 
+var end_cursor = "";
+
+var check;
+
+var options;
+
 var getAllPhoto = (username) => {
 
 fs.readFile("value/session.json", (err, data) => {
@@ -38,32 +44,49 @@ fs.readFile("value/session.json", (err, data) => {
             cookie :' sessionid='+sessionid+'; csrftoken='+csrfStore
         }
 
-        var options = {
+        options = {
             url: 'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"'+userID+'","first":50}',
             method: 'GET',
             headers: headers,
         }
 
-        request(options, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var parsedData = JSON.parse(body);
-                var arrayLength = parsedData.data.user.edge_owner_to_timeline_media.count;
-                count = 0;
-                if (arrayLength > 50) {
-                    for (let index = 0; index < 50 ; index++) {
-                        count++
-                        console.log(count)
-                        console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
-                    }                    
-                } else {
-                    for (let index = 0; index < arrayLength ; index++) {
-                        count++
-                        console.log(count)
-                        console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+        count = 0;        
+
+        function getImage() {
+            request(options, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var parsedData = JSON.parse(body);
+                    var arrayLength = parsedData.data.user.edge_owner_to_timeline_media.count;
+                    if (arrayLength > 50) {
+                        for (let index = 0; index < 50 ; index++) {
+                            count++
+                            console.log(count)
+                            console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            check = parsedData.data.user.edge_owner_to_timeline_media.page_info.has_next_page;
+                            if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
+                                break;
+                            }
+                        }
+                            if (check == true) {
+                                end_cursor = parsedData.data.user.edge_owner_to_timeline_media.page_info.end_cursor
+                                options = {
+                                    url: 'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"'+userID+'","first":50,"after":"'+end_cursor+'"}',
+                                    method: 'GET',
+                                    headers: headers,
+                                }
+                                getImage();
+                            }
+                    } else {
+                        for (let index = 0; index < arrayLength ; index++) {
+                            count++
+                            console.log(count)
+                            console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                        }
                     }
                 }
-            }
-        }) 
+            })            
+        }
+        getImage();
     })
 }
     module.exports.getAllPhoto = getAllPhoto;
