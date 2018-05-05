@@ -3,16 +3,12 @@ const request = require ('request');
 var fs = require('fs');
 
 Instagram = new Instagram()
-
 var csrfStore;
-
 var sessionid;
-
 var end_cursor = "";
-
 var check;
-
 var options;
+
 
 var getAllPhoto = (username) => {
 
