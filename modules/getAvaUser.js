@@ -39,11 +39,20 @@ Instagram.getUserDataByUsername(`${username}`).then((t) =>
             url: 'https://i.instagram.com/api/v1/users/'+userID+'/info/',
             method: 'GET',
             headers: headers,
+            agent: agent,
         }
 
         request(options, function (err, response ,body) {
             var dataParsed = JSON.parse(body);
             console.log(dataParsed.user.hd_profile_pic_url_info.url);
+            fs.writeFile(`value/${username}-ava.html`, `<br><img src="${dataParsed.user.hd_profile_pic_url_info.url}"><br>`, function(err){
+                if (err) {
+                    console.log(err)
+                }
+                // console.log(sessionid)
+                // console.log(csrfStore)
+                console.log(`File have been save at : value/${username}-ava.html`)
+            })
         })
 
     })

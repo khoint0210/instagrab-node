@@ -18,7 +18,7 @@ Instagram.getCsrfToken().then((csrf) =>
   {
     Instagram.sessionId = sessionId
 
-    fs.writeFile("value/session.json", `{\n "SessionID" : "${sessionId}",\n" CSRF" : "${csrfStore}"\n}`, function(err){
+    fs.writeFile("value/session.json", `{\n "SessionID" : "${sessionId}",\n "CSRF" : "${csrfStore}"\n}`, function(err){
         if (err) {
             console.log(err)
         }

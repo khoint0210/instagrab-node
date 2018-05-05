@@ -48,8 +48,11 @@ fs.readFile("value/session.json", (err, data) => {
 
         count = 0;        
 
+
         function getImage() {
             request(options, function (error, response, body) {
+                // console.log(response.statusCode);
+                // console.log(body);
                 if (!error && response.statusCode == 200) {
                     var parsedData = JSON.parse(body);
                     var arrayLength = parsedData.data.user.edge_owner_to_timeline_media.count;
@@ -57,9 +60,14 @@ fs.readFile("value/session.json", (err, data) => {
                         for (let index = 0; index < 50 ; index++) {
                             count++
                             console.log(count)
-                            console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            // console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
                             check = parsedData.data.user.edge_owner_to_timeline_media.page_info.has_next_page;
+                            fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
+                                if (err) throw err;
+                            });
+
                             if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
+                                console.log(`File is saved at : value/${username}-all-image.html`);                                
                                 break;
                             }
                         }
@@ -76,12 +84,26 @@ fs.readFile("value/session.json", (err, data) => {
                         for (let index = 0; index < arrayLength ; index++) {
                             count++
                             console.log(count)
-                            console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            // console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
+                                if (err) throw err;
+                            });
+                            if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
+                                console.log(`File is saved at : value/${username}-all-image.html`);                                
+                                break;
+                            }
                         }
                     }
                 }
-            })            
+            })
         }
+        fs.stat(`value/${username}-all-image.html`, function (err, stat) {
+            if (err == null) {
+                fs.unlink(`value/${username}-all-image.html`, (err) => {
+                    if (err) throw err;
+                })
+            }                        
+        })
         getImage();
     })
 }
