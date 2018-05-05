@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "instagram-nodejs-without-api": "^0.4.0",
+    "readline-sync": "^1.4.9",
+    "request": "^2.85.0",
+    "yargs": "^11.0.0"
+  },
+  "name": "Instagrab",
+  "version": "1.0.0",
+  "description": "Get image from Instagram",
+  "main": "app.js",
+  "author": "KhoiNt",
+  "license": "MIT"
+}
