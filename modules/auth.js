@@ -22,7 +22,11 @@ Instagram.getCsrfToken().then((csrf) =>
         if (err) {
             console.log(err)
         }
-        console.log("File have been save")
+        if (sessionId == undefined){
+            console.log("Authenticate failed .Do it manually")            
+        }else{
+            console.log("Login Success")
+        }
     })
   })
 })
