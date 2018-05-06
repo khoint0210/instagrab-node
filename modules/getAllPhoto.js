@@ -1,6 +1,8 @@
 var Instagram = require ('instagram-nodejs-without-api');
 const request = require ('request');
 var fs = require('fs');
+const _cliProgress = require('cli-progress');
+const bar1 = new _cliProgress.Bar({}, _cliProgress.Presets.legacy);
 
 Instagram = new Instagram()
 var csrfStore;
@@ -59,14 +61,17 @@ fs.readFile("value/session.json", (err, data) => {
                     if (arrayLength > 50) {
                         for (let index = 0; index < 50 ; index++) {
                             count++
-                            console.log(count)
+                            // console.log(count)
                             // console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            bar1.start(arrayLength, 0);
+                            bar1.update(count);
                             check = parsedData.data.user.edge_owner_to_timeline_media.page_info.has_next_page;
                             fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
                                 if (err) throw err;
                             });
 
                             if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
+                                bar1.stop();
                                 console.log(`File is saved at : value/${username}-all-image.html`);                                
                                 break;
                             }
@@ -107,4 +112,4 @@ fs.readFile("value/session.json", (err, data) => {
         getImage();
     })
 }
-    module.exports.getAllPhoto = getAllPhoto;
+module.exports.getAllPhoto = getAllPhoto;
