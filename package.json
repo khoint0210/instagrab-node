@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "cli-progress": "^1.8.0",
+    "grepit": "^1.0.0",
     "instagram-nodejs-without-api": "^0.4.0",
+    "lodash": "^4.17.10",
     "readline-sync": "^1.4.9",
     "request": "^2.85.0",
     "yargs": "^11.0.0"
