@@ -113,13 +113,16 @@ fs.readFile("value/session.json", (err, data) => {
                     } else {
                         for (let index = 0; index < arrayLength ; index++) {
                             count++
-                            console.log(count)
+                            // console.log(count)
                             // console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
+                            bar1.start(arrayLength, count);
+                            bar1.update(count);
                             fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
                                 if (err) throw err;
                             });
                             if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
-                                console.log(`File is saved at : value/${username}-all-image.html`);                                
+                                bar1.stop();                                                                
+                                console.log(`\nFile is saved at : value/${username}-all-image.html`);
                                 break;
                             }
                         }
