@@ -39,7 +39,6 @@ Instagram.getUserDataByUsername(`${username}`).then((t) =>
             url: 'https://i.instagram.com/api/v1/users/'+userID+'/info/',
             method: 'GET',
             headers: headers,
-            agent: agent,
         }
 
         request(options, function (err, response ,body) {
