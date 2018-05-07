@@ -113,13 +113,34 @@ fs.readFile("value/session.json", (err, data) => {
                     } else {
                         for (let index = 0; index < arrayLength ; index++) {
                             count++
-                            // console.log(count)
-                            // console.log(parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url)
                             bar1.start(arrayLength, count);
                             bar1.update(count);
-                            fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
-                                if (err) throw err;
-                            });
+                            if (parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.is_video == true) {
+                                var optionsVideo = {
+                                    url: 'https://www.instagram.com/p/'+parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.shortcode+'/',
+                                    method: 'GET',
+                                    headers: headers,
+                                }
+                                request(optionsVideo, function (error,response,body) {
+                                    if (response.statusCode == 200) {
+                                        fs.writeFile("value/output.txt", `${body}`, function(err){
+                                            if (err) {
+                                                console.log(err)
+                                            }
+                                            var result = grepit(/og:video:secure_url/, 'value/output.txt');
+                                            var videoLink = JSON.stringify(result[0]).replace('<meta property=\\"og:video:secure_url\\" content=\\"','').replace('mp4\\" />','mp4')
+                                            // console.log(`This is video link : ${videoLink}`)
+                                            fs.appendFile(`value/${username}-all-image.html`, `\n<video controls style="width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;"> <source src=${videoLink} type="video/mp4"> </video>`, (err) => {  
+                                                if (err) throw err;
+                                            });
+                                        })
+                                    }
+                                })
+                            } else {
+                                fs.appendFile(`value/${username}-all-image.html`, `\n<img src="${parsedData.data.user.edge_owner_to_timeline_media.edges[index].node.display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, (err) => {  
+                                    if (err) throw err;
+                                })
+                            }
                             if (count == parsedData.data.user.edge_owner_to_timeline_media.count) {
                                 bar1.stop();                                                                
                                 console.log(`\nFile is saved at : value/${username}-all-image.html`);
