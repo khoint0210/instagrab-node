@@ -1,6 +1,8 @@
 # Instagrab-node
 > Easy way to get ALL MEDIA of user on instagram
 
+![screenshot](/screenshot/screenshoot.png)
+
 ## Require
 ```
 npm install yarn -g
@@ -21,6 +23,6 @@ Here is how to fix.
 
 1. Log out on your laptop
 2. Log in again
-3. Use EditThisCookie extension to get SessionID and CRSF .Link download : http://www.editthiscookie.com/
+3. Use EditThisCookie extension to get SessionID and CRSF . Link download : http://www.editthiscookie.com/
 4. Add SessionID and CRSF to value/session.json
 5. Done. You good to go 

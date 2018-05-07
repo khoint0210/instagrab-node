@@ -23,9 +23,9 @@ Instagram.getCsrfToken().then((csrf) =>
             console.log(err)
         }
         if (sessionId == undefined){
-            console.log("Authenticate failed .Do it manually")            
+            console.log("Authenticate failed . Do it manually 😢")            
         }else{
-            console.log("Login Success")
+            console.log("Login Success 😎")
         }
     })
   })
