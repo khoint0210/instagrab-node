@@ -1,7 +1,7 @@
 # Instagrab-node
 > Easy way to get ALL MEDIA of user on instagram
 
-![screenshot](screenshot/screenshoot.png)
+![screenshot](screenshoot/screenshoot.png)
 
 ## Require
 ```
