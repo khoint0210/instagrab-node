@@ -55,9 +55,10 @@ fs.readFile("value/session.json", (err, data) => {
         count = 0;        
 
         function getImage() {
-            request(options, function (error, response, body) {
+            request(options, function (error, response, body ) {
                 // console.log(response.statusCode);
                 // console.log(body);
+                // console.log(response.headers);
                 if (!error && response.statusCode == 200) {
                     var parsedData = JSON.parse(body);
                     var arrayLength = parsedData.data.user.edge_owner_to_timeline_media.count;
@@ -148,6 +149,8 @@ fs.readFile("value/session.json", (err, data) => {
                             }
                         }
                     }
+                }if (response.statusCode == 429) {
+                    console.log("You have reach limit of REQUESTS\nTry again next hour");
                 }
             })
         }
