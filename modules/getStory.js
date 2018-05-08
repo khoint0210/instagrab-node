@@ -56,10 +56,25 @@ var getUserStory = (username) => {
                     for (var index = 0; index < arrayLenth ; index++) {
                         if (dataParsed.data.reels_media[0].items[index].__typename == 'GraphStoryImage'){
                             console.log(dataParsed.data.reels_media[0].items[index].display_url)
+                            fs.appendFile(`value/${username}-story.html`, `<img src="${dataParsed.data.reels_media[0].items[index].display_url}" style=" width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;">`, function(err){
+                                if (err) {
+                                    console.log(err)
+                                }
+                            })
                         }else{
                             if (dataParsed.data.reels_media[0].items[index].video_resources[1] == undefined) {
+                                fs.appendFile(`value/${username}-story.html`, `\n<video controls style="width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;"> <source src=${dataParsed.data.reels_media[0].items[index].video_resources[0].src} type="video/mp4"> </video>`, function(err){
+                                    if (err) {
+                                        console.log(err)
+                                    }
+                                })
                                 console.log(dataParsed.data.reels_media[0].items[index].video_resources[0].src)
                             }else{
+                                fs.appendFile(`value/${username}-story.html`, `\n<video controls style="width: 270px;height: 280px;float: left;margin-left: 70px;margin-top: 20px;margin-bottom: 60px;position: relative;"> <source src=${dataParsed.data.reels_media[0].items[index].video_resources[1].src} type="video/mp4"> </video>`, function(err){
+                                    if (err) {
+                                        console.log(err)
+                                    }
+                                })
                                 console.log(dataParsed.data.reels_media[0].items[index].video_resources[1].src)   
                             }
                         }
