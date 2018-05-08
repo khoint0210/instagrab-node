@@ -42,22 +42,26 @@ var getUserStory = (username) => {
 
             request(options, function (err, response ,body) {
                 var dataParsed = JSON.parse(body);
-                // console.log(dataParsed.data.reels_media[0].items)
+                let arrayLenth = 0;
                 if (dataParsed.data.reels_media[0] == undefined) {
                    console.log("This user dont have story to get. Me really sad 😢") 
                 }else{
-                    var arrayLenth = 0;
-                    for (index = 0; index < 10000; index++) {
+                    for (var index = 0; index < 10000; index++) {
+                        arrayLenth++;
                         if (dataParsed.data.reels_media[0].items[index] == undefined){
-                            arrayLenth++;
                             break;
                         }
                     }
-                    if(dataParsed.data.reels_media[0].items[--arrayLenth].__typename == 'GraphStoryImage'){
-                        console.log(dataParsed.data.reels_media[0].items[arrayLenth].display_url)
-                    }else{
-                        if (dataParsed.data.reels_media[0].items[arrayLenth].video_resources[1] == undefined) {
-                            console.log(dataParsed.data.reels_media[0].items[arrayLenth].video_resources[0].src)
+                    arrayLenth--
+                    for (var index = 0; index < arrayLenth ; index++) {
+                        if (dataParsed.data.reels_media[0].items[index].__typename == 'GraphStoryImage'){
+                            console.log(dataParsed.data.reels_media[0].items[index].display_url)
+                        }else{
+                            if (dataParsed.data.reels_media[0].items[index].video_resources[1] == undefined) {
+                                console.log(dataParsed.data.reels_media[0].items[index].video_resources[0].src)
+                            }else{
+                                console.log(dataParsed.data.reels_media[0].items[index].video_resources[1].src)   
+                            }
                         }
                     }
                 }
